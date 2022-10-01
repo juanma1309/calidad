@@ -1,0 +1,225 @@
+﻿
+@model PagedList.IPagedList<Model.vCompras>
+@using PagedList.Mvc
+@{ string strOrden = ""; string strImgOrder = "";}
+<table class="c-table c-table--highlight u-mb-small">
+    <caption class="c-table__title">
+        <div class="row">
+            <div class="col-md-6">
+                Historial de compras <small>20</small>
+                <button id="btnNewCompra" type="button" class="c-btn c-btn--info"  >
+                    Agregar compra
+                </button>
+            </div>
+            <div class="col-md-6">
+                <div class="c-field has-addon-right">
+                    <input class="c-input" id="txtBuscar" type="text" placeholder="Buscar..." value="@ViewBag.Buscar">
+                    <button id="btnBuscar" type="button" class="c-btn c-btn--info c-field__addon">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </caption>
+    <thead class="c-table__head c-table__head--slim">
+        <tr class="c-table__row">
+            @{strOrden = ViewBag.Order == "Id" ? "IdDesc" : "Id";
+                strImgOrder = ViewBag.Order == "Id" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "IdDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>"; }
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) #</th>
+            @{strOrden = ViewBag.Order == "Compra" ? "CompraDesc" : "Compra";
+                strImgOrder = ViewBag.Order == "Compra" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "CompraDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Descripción</th>
+            @{strOrden = ViewBag.Order == "Nombre" ? "NombreDesc" : "Nombre";
+                strImgOrder = ViewBag.Order == "Nombre" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "NombreDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Usuario</th>
+            @{strOrden = ViewBag.Order == "NombreEmpresa" ? "NombreEmpresaDesc" : "NombreEmpresa";
+                strImgOrder = ViewBag.Order == "NombreEmpresa" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "NombreEmpresaDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Proveedor</th>
+            @{strOrden = ViewBag.Order == "Fecha" ? "FechaDesc" : "Fecha";
+                strImgOrder = ViewBag.Order == "Fecha" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "FechaDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Fecha</th>
+            <th class="c-table__cell c-table__cell--head">Costo Neto</th>
+            <th class="c-table__cell c-table__cell--head">Impuesto</th>
+            <th class="c-table__cell c-table__cell--head">Costo Total</th>
+            <th class="c-table__cell c-table__cell--head">
+                <span class="u-hidden-visually">Tools</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+        <tr class="c-table__row">
+            <td class="c-table__cell">
+                @item.Id
+            </td>
+            <td class="c-table__cell">
+                @item.Compra
+            </td>
+            <td class="c-table__cell">
+                @item.Nombres
+            </td>
+            <td class="c-table__cell">
+                @item.NombreEmpresa
+            </td>
+            <td class="c-table__cell">
+                @item.Fecha.ToString("dd MMMM yyyy")
+            </td>
+            <td class="c-table__cell">
+                @item.CostoNeto
+            </td>
+            <td class="c-table__cell">
+                @item.Impuesto
+            </td>
+            <td class="c-table__cell">
+                @item.CostoTotal
+            </td>
+            <td class="c-table__cell u-text-right">
+                <div class="c-btn-group">
+                    <a class="c-btn c-btn--success" href="#!" onclick="funProveedor(@item.Id, 'M', event);">
+                        <i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar
+                    </a>
+
+                    <a class="c-btn c-btn--danger" href="#!" onclick="funProveedor(@item.Id, 'E', event);">
+                        <i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar
+                    </a>
+                </div>
+            </td>
+        </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td class="c-table__cell" colspan="9">
+                    No tienes compras registradas
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+</div>
+<div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+    @Html.PagedListPager(Model, page => Url.Action("ListaCompras", new { page, sort = ViewBag.CurrentSort, search = ViewBag.Buscar }))
+</div>
+<script>
+    var permiteOrdenar = '';
+    $(document).ready(function () {
+        $(".permiteOrdenar").on("click", function () {
+            permiteOrdenar = $(this).data("order");
+            cargaTabla($(this).data("order"), encodeURIComponent($("#txtBuscar").val()));
+        });
+        $("#btnBuscar").click(function () {
+            cargaTabla(permiteOrdenar, encodeURIComponent($("#txtBuscar").val()));
+        });
+        $("#datatable_paginate").on("click", 'a', function (e) {
+            e.preventDefault();
+            $("#msgCargando").show();
+            $.ajax({
+                url: this.href,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $("#msgCargando").hide();
+                    $('#divCompras').html(result);
+                }
+            });
+        });
+        $("#btnNewCompra").click(function () {
+            $('#divCompras').load(urlGeneral + 'Compras/NewCompra', function (response, status, xhr) {
+                $("#msgCargando").hide()
+            });
+        });
+    });
+
+
+
+    function funProveedor(id, tipo, evt) {
+        evt.preventDefault();
+        if (tipo == 'E') {
+            $.ajax({
+                type: "POST",
+                url: urlGeneral + "Proveedores/Eliminar",
+                data: "{Id: " + id + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    swal({
+                        "title": "",
+                        "text": response.Message,
+                        "type": "success",
+                        "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                    }).then(function () {
+                        $(".ocultarDespues").modal('hide');
+                        cargaTabla("", "");
+                    });
+                },
+                error: function (request, status, error) {
+                    swal({
+                        "title": "",
+                        "text": "No se puede conectar al servidor, intentelo más tarde! " + request.responseText,
+                        "type": "error",
+                        "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                    }).then(function () {
+                        //window.location = urlGeneral + "tramites";
+                    });
+                }
+            });
+        } else {
+            $("#modal8").modal("show");
+            $.ajax({
+                type: "POST",
+                url: urlGeneral + "Proveedores/Get",
+                data: "{Id: " + id + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.IsSuccess == true) {
+                        $("#Id").val(response.Result.Id);
+                        $("#txtNombreEmpresa").val(response.Result.NombreEmpresa);
+                        $("#txtCorreoElectronico").val(response.Result.CorreoElectronico);
+                        $("#txtTelefono").val(response.Result.Telefono);
+                        $("#drpMoneda").val(response.Result.Moneda);
+                        $("#drpZonaHoraria_Id").val(response.Result.ZonaHoraria_Id);
+                        $("#txtDireccion").val(response.Result.Direccion);
+
+                        var objFileUp = $('.esunarchivo');
+                        $(objFileUp).parent('div').find('img').attr("src", urlGeneral + "Uploads/" + response.Result.Logo);
+                        $(objFileUp).parent('div').find('img').show();
+                        $(objFileUp).parent('div').find('img').next('input').val(response.response);
+
+                    } else {
+                        swal({
+                            "title": "",
+                            "text": response.Message,
+                            "type": "error",
+                            "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                        }).then(function () {
+                            //window.location = urlGeneral + "tramites";
+                        });
+                    }
+                },
+                error: function (request, status, error) {
+                    swal({
+                        "title": "",
+                        "text": "No se puede conectar al servidor, intentelo más tarde! " + request.responseText,
+                        "type": "error",
+                        "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                    }).then(function () {
+                        //window.location = urlGeneral + "tramites";
+                    });
+                    $(".loadingAjaxAdd").hide();
+                }
+            });
+        }
+    }
+
+
+
+</script>

@@ -1,0 +1,77 @@
+﻿@model Model.Productos
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row u-mb-large">
+    <div class="col-sm-12">
+        <div id="msgCargando" class="col-md-12 c-table justify-content-center" style="text-align:center;">
+            <img src="~/Content/img/preloader.gif" />
+            <h3>Cargando...</h3>
+        </div>
+        <div id="divCompras" class="c-table-responsive@desktop">
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+@section scripts
+{
+
+    <script>
+        var strFiltro = "";
+        var strValOrder = "";
+        $(document).ready(function () {
+            cargaTabla("Id", "");
+        });
+        function cargaTabla(val, valOrder) {
+            if (val.length > 0) {
+                strFiltro = val;
+                val = "/?val=" + val;
+            }
+            if (valOrder.length > 0) {
+                strValOrder = valOrder;
+                valOrder = "valSearch=" + valOrder;
+                if (val.length < 1)
+                    valOrder = "/?" + valOrder;
+                else
+                    valOrder = "&" + valOrder;
+            }
+
+
+
+
+            $.ajaxSetup({ cache: false })
+            $('#divCompras').load(urlGeneral + 'Compras/ListaCompras' + val + valOrder, function (response, status, xhr) {
+                $("#msgCargando").hide()
+            });
+        }
+
+        function cargaTabla2(val, valOrder) {
+            if (val.length > 0) {
+                strFiltro = val;
+                val = "/?val=" + val;
+            }
+            if (valOrder.length > 0) {
+                strValOrder = valOrder;
+                valOrder = "valSearch=" + valOrder;
+                if (val.length < 1)
+                    valOrder = "/?" + valOrder;
+                else
+                    valOrder = "&" + valOrder;
+            }
+
+
+
+
+            $.ajaxSetup({ cache: false })
+            $('#listProd').load(urlGeneral + 'Productos/ListaProductos' + val + valOrder, function (response, status, xhr) {
+                $("#msgCargando").hide()
+                $(".columna-compras").hide();
+            });
+        }
+    </script>
+
+    <script src="~/Content/js/custom.js"></script>
+}

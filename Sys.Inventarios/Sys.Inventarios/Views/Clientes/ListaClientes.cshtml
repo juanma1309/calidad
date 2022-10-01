@@ -1,0 +1,212 @@
+﻿
+@model PagedList.IPagedList<Model.Empresas>
+@using PagedList.Mvc
+@{ string strOrden = ""; string strImgOrder = "";}
+<table class="c-table c-table--highlight u-mb-small">
+    <caption class="c-table__title">
+        <div class="row">
+            <div class="col-md-6">
+                Cliente <small>20</small>
+                <button id="btnAgregarCliente" type="button" class="c-btn c-btn--info" data-toggle="modal" data-target="#modal8">
+                    Agregar Cliente
+                </button>
+            </div>
+            <div class="col-md-6">
+                <div class="c-field has-addon-right">
+                    <input class="c-input" id="txtBuscar" type="text" placeholder="Buscar..." value="@ViewBag.Buscar">
+                    <button id="btnBuscar" type="button" class="c-btn c-btn--info c-field__addon">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </caption>
+    <thead class="c-table__head c-table__head--slim">
+        <tr class="c-table__row">
+            @{strOrden = ViewBag.Order == "Id" ? "IdDesc" : "Id";
+                strImgOrder = ViewBag.Order == "Id" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "IdDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>"; }
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) #</th>
+            @{strOrden = ViewBag.Order == "NombreEmpresa" ? "NombreEmpresaDesc" : "NombreEmpresa";
+                strImgOrder = ViewBag.Order == "NombreEmpresa" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "NombreEmpresaDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Cliente</th>
+            @{strOrden = ViewBag.Order == "CorreoElectronico" ? "CorreoElectronicoDesc" : "CorreoElectronico";
+                strImgOrder = ViewBag.Order == "CorreoElectronico" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "CorreoElectronicoDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Correo Electrónico</th>
+            @{strOrden = ViewBag.Order == "Telefono" ? "TelefonoDesc" : "Telefono";
+                strImgOrder = ViewBag.Order == "Telefono" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "TelefonoDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Telefono</th>
+            <th class="c-table__cell c-table__cell--head">
+                Logo
+            </th>
+            <th class="c-table__cell c-table__cell--head">
+                <span class="u-hidden-visually">Tools</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="c-table__row">
+                    <td class="c-table__cell">
+                        @item.Id
+                    </td>
+                    <td class="c-table__cell">
+                        @item.NombreEmpresa
+                    </td>
+                    <td class="c-table__cell">
+                        @item.CorreoElectronico
+                    </td>
+                    <td class="c-table__cell">
+                        @item.Telefono
+                    </td>
+                    <td class="c-table__cell">
+                        @{ string img = item.Logo != null && !string.IsNullOrEmpty(item.Logo) ? "/Uploads/" + item.Logo : "/Uploads/Default.png"; }
+                        <img src="@Html.Raw(img)" style="width:60px" />
+                    </td>
+
+                    <td class="c-table__cell u-text-right">
+                        <div class="c-btn-group">
+                            <a class="c-btn c-btn--success" href="#!" onclick="funProveedor(@item.Id, 'M', event);">
+                                <i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar
+                            </a>
+
+                            <a class="c-btn c-btn--danger" href="#!" onclick="funProveedor(@item.Id, 'E', event);">
+                                <i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td class="c-table__cell" colspan="10">
+                    No tienes clientes registrados
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+</div>
+<div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+    @Html.PagedListPager(Model, page => Url.Action("ListaClientes", new { page, sort = ViewBag.CurrentSort, search = ViewBag.Buscar }))
+</div>
+<script>
+    var permiteOrdenar = '';
+    $(document).ready(function () {
+        $(".permiteOrdenar").on("click", function () {
+            permiteOrdenar = $(this).data("order");
+            cargaTabla($(this).data("order"), $("#txtBuscar").val());
+        });
+        $("#btnBuscar").click(function () {
+            cargaTabla(permiteOrdenar, encodeURIComponent($("#txtBuscar").val()));
+        });
+        $("#datatable_paginate").on("click", 'a', function (e) {
+            e.preventDefault();
+            $("#msgCargando").show();
+            $.ajax({
+                url: this.href,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $("#msgCargando").hide();
+                    $('#divEmpresas').html(result);
+                }
+            });
+        });
+    });
+
+
+
+    function funProveedor(id, tipo, evt) {
+        evt.preventDefault();
+        if (tipo == 'E') {
+            $.ajax({
+                type: "POST",
+                url: urlGeneral + "Clientes/Eliminar",
+                data: "{Id: " + id + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    swal({
+                        "title": "",
+                        "text": response.Message,
+                        "type": "success",
+                        "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                    }).then(function () {
+                        $(".ocultarDespues").modal('hide');
+                        cargaTabla("", "");
+                    });
+                },
+                error: function (request, status, error) {
+                    swal({
+                        "title": "",
+                        "text": "No se puede conectar al servidor, intentelo más tarde! " + request.responseText,
+                        "type": "error",
+                        "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                    }).then(function () {
+                        //window.location = urlGeneral + "tramites";
+                    });
+                }
+            });
+        } else {
+            $("#modal8").modal("show");
+            $.ajax({
+                type: "POST",
+                url: urlGeneral + "Clientes/Get",
+                data: "{Id: " + id + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.IsSuccess == true) {
+                        $("#Id").val(response.Result.Id);
+                        $("#txtNombreEmpresa").val(response.Result.NombreEmpresa);
+                        $("#txtCorreoElectronico").val(response.Result.CorreoElectronico);
+                        $("#txtTelefono").val(response.Result.Telefono);
+                        $("#drpMoneda").val(response.Result.Moneda);
+                        $("#drpZonaHoraria_Id").val(response.Result.ZonaHoraria_Id);
+                        $("#txtDireccion").val(response.Result.Direccion);
+                        $("#fileLogo").removeAttr("required");
+                        var objFileUp = $('.esunarchivo');
+                        $(objFileUp).parent('div').find('img').attr("src", urlGeneral + "Uploads/" + response.Result.Logo);
+                        $(objFileUp).parent('div').find('img').show();
+                        $(objFileUp).parent('div').find('img').next('input').val(response.Result.Logo);
+
+                    } else {
+                        swal({
+                            "title": "",
+                            "text": response.Message,
+                            "type": "error",
+                            "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                        }).then(function () {
+                            //window.location = urlGeneral + "tramites";
+                        });
+                    }
+                },
+                error: function (request, status, error) {
+                    swal({
+                        "title": "",
+                        "text": "No se puede conectar al servidor, intentelo más tarde! " + request.responseText,
+                        "type": "error",
+                        "confirmButtonClass": "btn btn-secondary m-btn m-btn--wide"
+                    }).then(function () {
+                        //window.location = urlGeneral + "tramites";
+                    });
+                    $(".loadingAjaxAdd").hide();
+                }
+            });
+        }
+    }
+
+    $('#btnAgregarCliente').click(function () {
+        $("#fileLogo").attr("required", "required");
+    })
+
+</script>

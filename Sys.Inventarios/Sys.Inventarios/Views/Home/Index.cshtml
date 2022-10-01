@@ -1,0 +1,301 @@
+﻿@model Model.Usuarios
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="c-card u-p-medium u-mb-medium">
+            <div class="u-flex u-justify-between u-align-items-center">
+                <h3 class="c-card__title">Revenue</h3>
+                <span class="u-text-small u-text-uppercase u-text-mute">January 2017</span>
+            </div>
+
+            <canvas id="js-chart-revenue" width="300" height="178"></canvas>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <!-- Cards below rely on utilities (u-) as they are highly customizable -->
+        <div class="c-card u-p-medium u-mb-small">
+            <h4 class="u-h5">Active Clients</h4>
+            <p class="u-text-small u-text-mute u-mb-small">You’re currently in <strong class="u-text-bold">TOP 10%</strong> of Workspace platform your rating is <strong class="u-text-bold">4.85</strong>. Keep up great work! </p>
+            <div class="o-line u-mb-small">
+                <p class="u-text-small u-mr-small">Rating</p>
+                <div class="c-progress c-progress--success c-progress--small u-mb-zero">
+                    <div class="c-progress__bar" style="width:72%;"></div>
+                </div>
+                <div class="u-text-small u-text-mute u-ml-small">72%</div>
+            </div>
+            <div class="o-line u-mb-small">
+                <p class="u-text-small u-mr-small">Budget</p>
+                <div class="c-progress c-progress--fancy c-progress--small u-mb-zero">
+                    <div class="c-progress__bar" style="width:42.6%;"></div>
+                </div>
+                <div class="u-text-small u-text-mute u-ml-small">42.6%</div>
+            </div>
+            <div class="o-line">
+                <p class="u-text-small u-mr-small">Timing</p>
+                <div class="c-progress c-progress--info c-progress--small u-mb-zero">
+                    <div class="c-progress__bar" style="width:89.2%;"></div>
+                </div>
+                <div class="u-text-small u-text-mute u-ml-small">89.2%</div>
+            </div>
+        </div>
+        <div class="c-card u-p-medium u-mb-small">
+            <h4 class="u-h5">Tasks</h4>
+            <div class="o-line u-mb-xsmall">
+                <p class="u-text-small">Completed</p>
+                <span class="u-text-small u-text-mute">340</span>
+            </div>
+            <div class="o-line u-mb-xsmall">
+                <p class="u-text-small">Total</p>
+                <span class="u-text-small u-text-mute">520</span>
+            </div>
+            <div class="o-line u-mb-xsmall">
+                <p class="u-text-small">Monthly Average</p>
+                <span class="u-text-small u-text-mute">2454</span>
+            </div>
+            <div class="c-divider u-mt-xsmall u-mb-xsmall"></div>
+            <div class="o-line">
+                <p class="u-text-small u-mr-small">Progress</p>
+                <div class="c-progress c-progress--success c-progress--small u-mb-zero">
+                    <div class="c-progress__bar" style="width:65.3%;"></div>
+                </div>
+                <div class="u-text-small u-text-mute u-ml-small">65.3%</div>
+            </div>
+        </div>
+    </div>
+</div><!-- // .row -->
+<div class="row">
+    <div class="col-sm-12 col-lg-6 col-xl-3">
+        <div class="c-state-card" data-mh="state-cards">
+            <div class="c-state-card__icon c-state-card__icon--info">
+                <i class="fa fa-line-chart"></i>
+            </div>
+            <div class="c-state-card__content">
+                <h5 class="c-state-card__number">
+                    $9,587
+                    <span class="c-state-card__status u-bg-green">
+                        <i class="fa fa-caret-up"></i>
+                    </span>
+                </h5>
+                <p class="c-state-card__meta">Total Profit <span class="u-text-success">(+$286)</span></p>
+            </div>
+        </div>
+    </div><!-- // .col-md-3 -->
+    <div class="col-sm-12 col-lg-6 col-xl-3">
+        <div class="c-state-card" data-mh="state-cards">
+            <div class="c-state-card__icon c-state-card__icon--fancy">
+                <i class="fa fa-pie-chart"></i>
+            </div>
+            <div class="c-state-card__content">
+                <h5 class="c-state-card__number">
+                    $2,190
+                    <span class="c-state-card__status u-bg-green">
+                        <i class="fa fa-caret-up"></i>
+                    </span>
+                </h5>
+                <p class="c-state-card__meta">Revenue <span class="u-text-success">(+$286)</span></p>
+            </div>
+        </div>
+    </div><!-- // .col-md-3 -->
+    <div class="col-sm-12 col-lg-6 col-xl-3">
+        <div class="c-state-card" data-mh="state-cards">
+            <div class="c-state-card__icon c-state-card__icon--warning">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="c-state-card__content">
+                <h5 class="c-state-card__number">
+                    93
+                    <span class="c-state-card__status u-bg-red">
+                        <i class="fa fa-caret-down"></i>
+                    </span>
+                </h5>
+                <p class="c-state-card__meta">Active Clients <span class="u-text-danger">(-2)</span></p>
+            </div>
+        </div>
+    </div><!-- // .col-md-3 -->
+    <div class="col-sm-12 col-lg-6 col-xl-3">
+        <div class="c-state-card" data-mh="state-cards">
+            <div class="c-state-card__icon c-state-card__icon--success">
+                <i class="fa fa-bar-chart"></i>
+            </div>
+            <div class="c-state-card__content">
+                <h5 class="c-state-card__number">
+                    $431
+                    <span class="c-state-card__status u-bg-green">
+                        <i class="fa fa-caret-up"></i>
+                    </span>
+                </h5>
+                <p class="c-state-card__meta">Profit <span class="u-text-success">(+$3.11)</span></p>
+            </div>
+        </div>
+    </div><!-- // .col-md-3 -->
+</div><!-- // .row -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="c-card c-card--responsive u-mb-medium">
+            <div class="c-card__header c-card__header--transparent o-line">
+                <h5 class="c-card__title">Recent Income</h5>
+                <div class="c-card__meta">
+                    <a href="#">View All</a>
+                </div>
+            </div>
+            <table class="c-table u-border-zero">
+                <tbody>
+                    <tr class="c-table__row u-border-top-zero">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar1-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Minnie Ferguson</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">One Page Dashboard</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                    <tr class="c-table__row">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar2-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Ann Hunter</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">New Website</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                    <tr class="c-table__row">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar3-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Wedding</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">New Website</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                    <tr class="c-table__row">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar4-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Caleb Castillo</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">One-Pager for iOS App</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="c-card c-card--responsive u-mb-medium">
+            <div class="c-card__header c-card__header--transparent o-line">
+                <h5 class="c-card__title">Best Customers</h5>
+                <a class="c-card__meta" href="#">View All</a>
+            </div>
+            <table class="c-table u-border-zero">
+                <tbody>
+                    <tr class="c-table__row u-border-top-zero">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar5-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Minnie Ferguson</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">New Website</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                    <tr class="c-table__row">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar6-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Minnie Ferguson</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">New Website</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                    <tr class="c-table__row">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar7-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Minnie Ferguson</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">New Website</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                    <tr class="c-table__row">
+                        <td class="c-table__cell">
+                            <div class="u-flex u-align-items-center">
+                                <div class="c-avatar c-avatar--xsmall u-mr-xsmall">
+                                    <img class="c-avatar__img" src="img/avatar8-72.jpg" alt="Adam's face">
+                                </div>
+                                <span class="u-text-bold">Minnie Ferguson</span>
+                            </div>
+                        </td>
+                        <td class="c-table__cell">New Website</td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-bold">$150</span>
+                        </td>
+                        <td class="c-table__cell u-text-right">
+                            <span class="u-text-mute">3 Days ago</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div><!-- // .row -->

@@ -1,0 +1,73 @@
+﻿<div class="row">
+    <div class="col-xl-12">
+        <div class="c-card u-p-medium u-mb-medium">
+            <div class="u-flex u-justify-between u-align-items-center">
+                <h3 class="c-card__title">Agregar Compra</h3>
+                <span class="u-text-small u-text-uppercase u-text-mute">@DateTime.Now.ToString("MMMM") @DateTime.Now.ToString("yyyy") </span>
+            </div>
+
+            <form class="c-card__body formAjaxAdd" method="post" action="~/Clientes/Add">
+                <div class="row">
+                    <div class="col-md-12 c-field u-mb-xsmall">
+                        <label class="c-field__label" for="input-project">Nombre del proveedor</label>
+                        <select class="c-input" name="Moneda" id="drpMoneda">
+                            <option value="">Seleccione el proveedor</option>
+                            @foreach (var item in ViewBag.Proveedores)
+                            {
+                                <option value="@item.Id">@item.NombreEmpresa</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 c-field u-mb-xsmall">
+                        <label class="c-field__label" for="input-project">Fecha</label>
+                        <input type="text" class="c-input" name="Fecha" id="txtFecha" placeholder="dd/mm/yyyy" required="required">
+                    </div>
+                    <div class="col-md-4 c-field u-mb-xsmall">
+                        <label class="c-field__label" for="input-project">Número de compras</label>
+                        <input type="text" class="c-input" name="NumeroCompra" id="txtNumeroCompra" placeholder="00" required="required">
+                    </div>
+                    <div class="col-md-4 c-field u-mb-xsmall">
+                        <button id="btnAddProd" type="button" class="c-btn c-btn--info c-field__addon" style="margin-top:25px" data-toggle="modal" data-target="#modalProductos">
+                            <i class="fa fa-search"></i> Buscar Productos
+                        </button>
+                    </div>
+
+
+                    <input type="hidden" name="Id" id="Id" />
+                </div>
+                <div class="c-modal__footer u-justify-center">
+                    <button class="c-btn c-btn--success btnAjaxAdd" type="submit">
+                        Guardar Compra
+                        <img src="~/Content/img/load.gif" class="loadingAjaxAdd" style="display:none" />
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="c-modal c-modal--large modal fade ocultarDespues" id="modalProductos" tabindex="-1" role="dialog" aria-labelledby="modal8" data-backdrop="static">
+    <div class="c-modal__dialog modal-dialog" role="document">
+        <div class="c-modal__content">
+
+            <div class="c-modal__header u-bg-primary">
+                <h3 class="c-modal__title">Productos</h3>
+                <span class="c-modal__close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-close"></i>
+                </span>
+            </div>
+            <div class="c-modal__body">
+                <div class="row">
+                    <div id="listProd" class="col-md-12">
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- // .c-modal__content -->
+    </div><!-- // .c-modal__dialog -->
+</div><!-- // .c-modal -->
+<script>
+    $(document).ready(function () {
+        cargaTabla2("Id", "");
+    });
+</script>

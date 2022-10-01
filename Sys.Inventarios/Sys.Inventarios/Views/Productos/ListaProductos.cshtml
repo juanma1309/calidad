@@ -1,0 +1,151 @@
+﻿@model PagedList.IPagedList<Model.Productos>
+@using PagedList.Mvc
+@{ string strOrden = ""; string strImgOrder = "";}
+<table class="c-table c-table--highlight u-mb-small">
+    <caption class="c-table__title">
+        <div class="row">
+            <div class="col-md-6  columna-compras">
+                Productos <small>20</small>
+                <button type="button" class="c-btn c-btn--info" data-toggle="modal" data-target="#modal8">
+                    Agregar Producto
+                </button>
+            </div>
+            <div class="col-md-6">
+                <div class="c-field has-addon-right">
+                    <input class="c-input" id="txtBuscar" type="text" placeholder="Buscar..." value="@ViewBag.Buscar">
+                    <button id="btnBuscar" type="button" class="c-btn c-btn--info c-field__addon">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </caption>
+    <thead class="c-table__head c-table__head--slim">
+        <tr class="c-table__row">
+            @{strOrden = ViewBag.Order == "Id" ? "IdDesc" : "Id";
+                strImgOrder = ViewBag.Order == "Id" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "IdDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>"; }
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) #</th>
+            @{strOrden = ViewBag.Order == "Nombre" ? "NombreDesc" : "Nombre";
+                strImgOrder = ViewBag.Order == "Nombre" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "NombreDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Producto</th>
+            @{strOrden = ViewBag.Order == "Codigo" ? "CodigoDesc" : "Codigo";
+                strImgOrder = ViewBag.Order == "Codigo" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "CodigoDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar" data-order="@strOrden">@Html.Raw(strImgOrder) Codigo</th>
+            @{strOrden = ViewBag.Order == "Marca" ? "MarcaDesc" : "Marca";
+                strImgOrder = ViewBag.Order == "Marca" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "MarcaDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar columna-compras" data-order="@strOrden">@Html.Raw(strImgOrder) Marca</th>
+            @{strOrden = ViewBag.Order == "Costo" ? "CostoDesc" : "Costo";
+                strImgOrder = ViewBag.Order == "Costo" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "CostoDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar columna-compras" data-order="@strOrden">@Html.Raw(strImgOrder) Costo</th>
+            @{strOrden = ViewBag.Order == "PrecioVenta" ? "PrecioVentaDesc" : "PrecioVenta";
+                strImgOrder = ViewBag.Order == "PrecioVenta" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "PrecioVentaDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar columna-compras" data-order="@strOrden">@Html.Raw(strImgOrder) Precio Venta</th>
+            @{strOrden = ViewBag.Order == "Utilidad" ? "UtilidadDesc" : "Utilidad";
+                strImgOrder = ViewBag.Order == "Utilidad" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "UtilidadDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar columna-compras" data-order="@strOrden">@Html.Raw(strImgOrder) Utilidad</th>
+            @{strOrden = ViewBag.Order == "Stock" ? "StockDesc" : "Stock";
+                strImgOrder = ViewBag.Order == "Stock" ? "<i class=\"fa fa-sort-asc\"></i>" : ViewBag.Order == "StockDesc" ? "<i class=\"fa fa-sort-desc\"></i>" : "<i class=\"fa fa-sort\"></i>";}
+            <th class="c-table__cell c-table__cell--head permiteOrdenar columna-compras" data-order="@strOrden">@Html.Raw(strImgOrder) Stock</th>
+            <th class="c-table__cell c-table__cell--head">
+                <span class="u-hidden-visually">Tools</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="c-table__row">
+                    <td class="c-table__cell">
+                        @item.Id
+                    </td>
+                    <td class="c-table__cell">
+                        @item.Nombre
+                        <small class="u-block u-text-mute">@item.Descripcion</small>
+                        <small class="u-block u-text-mute columna-add-prod">@item.Codigo</small>
+                    </td>
+                    <td class="c-table__cell columna-compras">
+                        @item.Codigo
+                    </td>
+                    <td class="c-table__cell columna-compras">
+                        @item.Marca
+                        <small class="u-block u-text-mute">@item.Modelo</small>
+                    </td>
+                    <td class="c-table__cell columna-compras">
+                        @item.Costo
+                    </td>
+                    <td class="c-table__cell columna-compras">
+                        @item.PrecioVenta
+                    </td>
+                    <td class="c-table__cell columna-compras">
+                        @item.Utilidad
+                    </td>
+                    <td class="c-table__cell columna-compras">
+                        @item.Stock
+                    </td>
+                    <td class="c-table__cell u-text-right">
+                        <div class="c-btn-group">
+                            <a class="c-btn c-btn--success columna-compras" href="#!" onclick="funProd(@item.Id, 'M', event);">
+                                <i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar
+                            </a>
+
+                            <a class="c-btn c-btn--danger columna-compras" href="#!" onclick="funProd(@item.Id, 'E', event);">
+                                <i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar
+                            </a>
+
+                            <a class="c-btn c-btn--danger columna-add-prod" href="#!" onclick="funAddProd(@item.Id, event);">
+                                <i class="fa fa-trash-o u-mr-xsmall"></i>Seleccionar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td class="c-table__cell" colspan="10">
+                    No tienes productos registrados
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+</div>
+<div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+    @Html.PagedListPager(Model, page => Url.Action("ListaProductos", new { page, sort = ViewBag.CurrentSort, search = ViewBag.Buscar }))
+</div>
+<script>
+    var permiteOrdenar = '';
+    $(document).ready(function () {
+        $(".permiteOrdenar").on("click", function () {
+            permiteOrdenar = $(this).data("order");
+            cargaTabla($(this).data("order"), $("#txtBuscar").val());
+        });
+        $("#btnBuscar").click(function () {
+            cargaTabla(permiteOrdenar, $("#txtBuscar").val());
+        });
+        $("#datatable_paginate").on("click", 'a', function (e) {
+            e.preventDefault();
+            $("#msgCargando").show();
+            $.ajax({
+                url: this.href,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $("#msgCargando").hide();
+                    
+                    $('#divProductos').html(result);
+                }
+            });
+        });
+    });
+
+   
+
+</script>
